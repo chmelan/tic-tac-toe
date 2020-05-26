@@ -1,4 +1,5 @@
 body{
+    font-family: monospace;
     display: grid;
     
     grid-template-columns: repeat(6, 1fr);
@@ -46,9 +47,14 @@ h1{
     border: 2px solid black;
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(3, 1fr);
+
 }
 .gameBoardGrid{
+    display: flex;
+    justify-content: center;
+    align-content: center;
     border: 1px solid black;
+    font-size: 50px;
 }
 .newGameButton{
     border: 1px solid red;

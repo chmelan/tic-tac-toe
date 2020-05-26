@@ -5,8 +5,8 @@ boardState:["", "", "", "", "", "", "", "", ""]
 
 
 //creates player objects
-const PlayerFactory = (name, icon) => {
-    return {name, icon, score: 0}
+const PlayerFactory = (name, icon, score) => {
+    return {name, icon, score}
 }
 
 const displayController = (() => {
@@ -65,9 +65,9 @@ function test(){
 }
 
 const Game = (() => {
-    let player1 = PlayerFactory("Bob", "X")
-    let player2 = PlayerFactory("Joe", "O")
-    let currentPlayer = player1
+    let player1 
+    let player2 
+    let currentPlayer 
 //a let called currentTurn that references the current player // 
         //a let called Players that holds the players
 
@@ -94,23 +94,21 @@ const Game = (() => {
         return false
     }
 
-        //controls who's turn it is, by storing it in a current player variable
-            // toggles between 
+    const toggleCurrentPlayer = ()=>{
+        //removes the currentplayers class of active player
+        (currentPlayer === player1)?  displayController.removeClass(".p1", "activePlayer") : displayController.removeClass(".p2", "activePlayer");
+        //if the current player is player1, it sets it to player2, otherwise, it sets it to player1
+        (currentPlayer === player1)?currentPlayer = player2 : currentPlayer = player1;
+        //adds the class of active player to the current player's div
+        (currentPlayer === player1)?  displayController.addClass(".p1", "activePlayer") : displayController.addClass(".p2", "activePlayer");
+        //updates the game status display with the current player's turn
+        displayController.setTextContent(".gameStatusDisplay", `${currentPlayer.name}'s Turn!`)
 
-
-
-        //function startNewRound
-            //clears the GameBoard Array
-            //updates the gameboard display
-            //sets current player to player 1
-                //removes activePlayer class from player 2 div
-                //adds activePlayer class to the player 1 div
-             //initializeGameboard() //reinitializes the gameboard so that users can play the game
-                
+    }
+            
     const playerWinsGame = ()=>{
         //sets the gameStatusDisplay text to "currentPlayer.name wins the game!"
         displayController.setTextContent(".gameStatusDisplay", `${currentPlayer.name} wins the game!`)
-        //increases the current player's score
         currentPlayer.score ++
         //updates the current player's score display
         (currentPlayer === player1)?  displayController.setTextContent("#p1Score", currentPlayer.score) : displayController.setTextContent("#p2Score", currentPlayer.score)
@@ -119,32 +117,47 @@ const Game = (() => {
     }
             
     const playerTieGame = ()=>{
-        alert("Tie!")
+        //sets the gameStatusDisplay text to "Tie!"
+        displayController.setTextContent(".gameStatusDisplay", `Tie!`)
+        //removes the event listeners on the gameboard grids so that players cannot continue to input data
         displayController.removeEventListenerFromTarget(".gameBoardContainer", "click", makePlayerMove);
     }
-        //function playerTieGame
-            //sets the gameStatusDisplay text to "Tie Game ;("
-            //removes the event listeners on the gameboard grids so that players cannot continue to click buttons
 
-        //function startNewGame
-            //resets the gameBoard array
-            //updates the gameboard display
-            //sets the round counter to 0
-            //deletes player 1 and player 2
-            //prompts user to create player 1
-                //uses this input to create a new player from the PlayerFactory that is stored in the game object in a players array with an icon of "X"
-                //sets text of player 1 div to be the name of player 1  
-            //prompts user to create player 2
-                //uses this input to create a new player from the PlayerFactory that is stored in the game object in a players arraywith an icon of "O"
-                //sets the text of player 2 div to be the name of player 2
-            //sets current player to player 1
-                //removes active player class from player 2 div
-                //adds active player class to player 1 div
-            //initializeGameboard() //reinitializes the gameboard so that users can play the game
-            
+    const startNewGame = ()=>{
+            resetGameBoard()
+            player1 = PlayerFactory(prompt("Player 1: Please enter your name")||"Player 1", "X", 0)
+            displayController.setTextContent("#p1Name", player1.name)
+            displayController.setTextContent("#p1Icon", player1.icon)
+            displayController.setTextContent("#p1Score", player1.score)
+            player2 = PlayerFactory(prompt("Player 2: Please enter your name")||"Player 2", "O", 0)
+            displayController.setTextContent("#p2Name", player2.name)
+            displayController.setTextContent("#p2Icon", player2.icon)
+            displayController.setTextContent("#p2Score", player2.score)
+                //removes active player class from player 1 and player 2 div
+            displayController.removeClass(".p1", "activePlayer")
+            displayController.removeClass(".p2", "activePlayer");    
+            currentPlayer = player1
+            displayController.setTextContent(".gameStatusDisplay", `${currentPlayer.name}'s Turn!`)
+            //adds active player class to player 1 div
+            displayController.addClass(".p1", "activePlayer")
+            //reinitializes the gameboard so that users can play the game
+            displayController.addEventListenerToTarget(".gameBoardContainer", "click", makePlayerMove)
+    }
+    
+    const startNewRound = ()=>{
+            resetGameBoard()
+            displayController.removeClass(".p1", "activePlayer")
+            displayController.removeClass(".p2", "activePlayer");    
+            currentPlayer = player1
+            displayController.setTextContent(".gameStatusDisplay", `${currentPlayer.name}'s Turn!`)
+            //adds active player class to player 1 div
+            displayController.addClass(".p1", "activePlayer")
+        displayController.addEventListenerToTarget(".gameBoardContainer", "click", makePlayerMove);       
 
+    } 
 
     const makePlayerMove = (e)=>{
+        console.log("making player move")
         //if the clicked div is not empty
         if(e.target.textContent !== "")return alert("that is not a valid move!")
         console.log(e.target.dataset.index)
@@ -156,49 +169,24 @@ const Game = (() => {
         if(checkForWin())return playerWinsGame()
         //checks for a tie
         if(checkForTie())return playerTieGame()
-            //else
-                //set the current player to the other player 
+        //otherwise, switch to player 2
+        toggleCurrentPlayer()
     }
-
+    const resetGameBoard =()=>{
+        //resets the gameBoard array
+        Gameboard.boardState = ["", "", "", "", "", "", "", "", ""]
+        //updates the gameboard display
+        displayController.updateGameboardDisplay()
+    }
 
         //event listeners go here   
             //new round button on click startNewRound
             //new game button on click startNewGame
             //gameboard divs on click makePlayerMove
-        
-        displayController.addEventListenerToTarget(".gameBoardContainer", "click", makePlayerMove)
+        displayController.addEventListenerToTarget(".newRoundButton", "click", startNewRound)   
+        displayController.addEventListenerToTarget(".newGameButton", "click", startNewGame)
+        startNewGame()
         return {
             //functions to return
         };
     })();
-
-//Game
-        
-
-
-
-
-//displayController
-
-    //prompt user for input
-    //display an array in a set of divs
-
-
-
-
-
-
-
-
-displayController.updateGameboardDisplay()
-
-
-
-
-// dont know
-    // when a user clicks a grid space, it should update the gameboard array with the player's icon , and update the div
-        //stops a player from entering info if the grid/array relationship already contains a value 
-
-
-
-// game flow. User clicks a square, the array is updated with the value of the player, the game checks if the player wins, if not, the game continues on.  When a player wins, the game either starts over, or starts a new round
