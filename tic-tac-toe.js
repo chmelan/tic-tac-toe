@@ -5,9 +5,7 @@ boardState:["", "", "", "", "", "", "", "", ""]
 
 
 //creates player objects
-const PlayerFactory = (name, icon, score) => {
-    return {name, icon, score}
-}
+
 
 const displayController = (() => {
 
@@ -68,8 +66,10 @@ const Game = (() => {
     let player1 
     let player2 
     let currentPlayer 
-//a let called currentTurn that references the current player // 
-        //a let called Players that holds the players
+
+    const PlayerFactory = (name, icon, score) => {
+        return {name, icon, score}
+    }
 
     const checkForWin = ()=>{
         //checks for matches in rows 
