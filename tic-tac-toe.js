@@ -17,28 +17,29 @@ const Game = (() => {
 //a let called currentTurn that references the current player // 
         //a let called Players that holds the players
 
-        //function checkForWin
-const checkForWin = ()=>{
-    //checks for matches in rows 
-    if(Gameboard.boardState[0] === Gameboard.boardState[1] && Gameboard.boardState[0] === Gameboard.boardState[2] && Gameboard.boardState[0] !== "" ||
-       Gameboard.boardState[3] === Gameboard.boardState[4] && Gameboard.boardState[3] === Gameboard.boardState[5] && Gameboard.boardState[3] !== "" ||
-       Gameboard.boardState[6] === Gameboard.boardState[7] && Gameboard.boardState[6] === Gameboard.boardState[8] && Gameboard.boardState[6] !== "" )return true
-    //checks for  matches in cols
-    if(Gameboard.boardState[0] === Gameboard.boardState[3] && Gameboard.boardState[0] === Gameboard.boardState[6] && Gameboard.boardState[0] !== "" ||
-       Gameboard.boardState[1] === Gameboard.boardState[4] && Gameboard.boardState[1] === Gameboard.boardState[7] && Gameboard.boardState[1] !== "" ||
-       Gameboard.boardState[2] === Gameboard.boardState[5] && Gameboard.boardState[2] === Gameboard.boardState[8] && Gameboard.boardState[2] !== "" )return true
-            //checks for  matches in diags
-    if(Gameboard.boardState[0] === Gameboard.boardState[4] && Gameboard.boardState[0] === Gameboard.boardState[8] && Gameboard.boardState[0] !== "" ||
+    const checkForWin = ()=>{
+        //checks for matches in rows 
+        if(Gameboard.boardState[0] === Gameboard.boardState[1] && Gameboard.boardState[0] === Gameboard.boardState[2] && Gameboard.boardState[0] !== "" ||
+        Gameboard.boardState[3] === Gameboard.boardState[4] && Gameboard.boardState[3] === Gameboard.boardState[5] && Gameboard.boardState[3] !== "" ||
+        Gameboard.boardState[6] === Gameboard.boardState[7] && Gameboard.boardState[6] === Gameboard.boardState[8] && Gameboard.boardState[6] !== "" )return true
+        //checks for  matches in cols
+        if(Gameboard.boardState[0] === Gameboard.boardState[3] && Gameboard.boardState[0] === Gameboard.boardState[6] && Gameboard.boardState[0] !== "" ||
+        Gameboard.boardState[1] === Gameboard.boardState[4] && Gameboard.boardState[1] === Gameboard.boardState[7] && Gameboard.boardState[1] !== "" ||
+        Gameboard.boardState[2] === Gameboard.boardState[5] && Gameboard.boardState[2] === Gameboard.boardState[8] && Gameboard.boardState[2] !== "" )return true
+        //checks for  matches in diags
+        if(Gameboard.boardState[0] === Gameboard.boardState[4] && Gameboard.boardState[0] === Gameboard.boardState[8] && Gameboard.boardState[0] !== "" ||
         Gameboard.boardState[2] === Gameboard.boardState[4] && Gameboard.boardState[2] === Gameboard.boardState[6] && Gameboard.boardState[2] !== "" )return true
-    return false
-}
+        //if nothing matches
+        return false
+    }
 
-            //else it returns false
 
-        //function check for ties
-            // if array does not contain ""(empty string)
-                //return true
-            //else return false 
+    const checkForTie = ()=>{
+        //checks if array doesnt contain any empty spaces
+        if(!Gameboard.boardState.includes(""))return true
+        return false
+    }
+
 
         //controls who's turn it is, by storing it in a current player variable
             // toggles between 
@@ -101,6 +102,7 @@ const checkForWin = ()=>{
         return {
             //functions to return
             checkForWin,
+            checkForTie,
         };
     })();
 
@@ -178,7 +180,7 @@ function test(){
 displayController.updateGameboardDisplay()
 
 
-console.log(Game.checkForWin())
+console.log(Game.checkForTie())
 // dont know
     // when a user clicks a grid space, it should update the gameboard array with the player's icon , and update the div
         //stops a player from entering info if the grid/array relationship already contains a value 
