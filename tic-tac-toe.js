@@ -4,13 +4,10 @@ boardState:["", "", "", "", "", "", "", "", ""]
 }
 
 
-
-//PlayerFactory
-    //creates player objects 
-        //player traits
-            //player name
-            //player icon  x for player 1 and y for player 2
-            //player score 
+//creates player objects
+const PlayerFactory = (name, icon) => {
+    return {name, icon, score: 0}
+}
 
 const Game = (() => {
 
@@ -58,6 +55,7 @@ const Game = (() => {
             //sets the gameStatusDisplay text to "currentPlayer.name wins the game!"
             // currentPlayer.score ++
             //removes the event listeners on the gameboard grids so that players cannot continue to click buttons
+
         //function playerTieGame
             //sets the gameStatusDisplay text to "Tie Game ;("
             //removes the event listeners on the gameboard grids so that players cannot continue to click buttons
@@ -101,8 +99,6 @@ const Game = (() => {
 
         return {
             //functions to return
-            checkForWin,
-            checkForTie,
         };
     })();
 
@@ -180,10 +176,12 @@ function test(){
 displayController.updateGameboardDisplay()
 
 
-console.log(Game.checkForTie())
+
+
 // dont know
     // when a user clicks a grid space, it should update the gameboard array with the player's icon , and update the div
         //stops a player from entering info if the grid/array relationship already contains a value 
+
 
 
 // game flow. User clicks a square, the array is updated with the value of the player, the game checks if the player wins, if not, the game continues on.  When a player wins, the game either starts over, or starts a new round
