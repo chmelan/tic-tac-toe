@@ -1,5 +1,6 @@
 let Gameboard = {
-boardState: ["x","x","x","","o","o","x","x",""]
+//boardState: ["0","1","2","3","4","5","6","7","8"]
+boardState:["", "", "", "", "", "", "", "", ""]
 }
 
 
@@ -11,21 +12,26 @@ boardState: ["x","x","x","","o","o","x","x",""]
             //player icon  x for player 1 and y for player 2
             //player score 
 
-        
+const Game = (() => {
 
-
-
-//Game
-        //a let called currentTurn that references the current player // 
+//a let called currentTurn that references the current player // 
         //a let called Players that holds the players
 
         //function checkForWin
-            //checks for win: matches in rows gameBoard  ([0] === [1] === 2 !=== ''),  Or ([3] and [4] and [5]) or ([6] and [7] and [8]) and does not contain strings
-                    //returns true
-            //checks for win: matches in cols gameBoard ([0] and [3] and 6]),  Or ([1] and [4] and [7]) or ([2] and [5] and [8]) and does not contain strings
-                    //returns true
-            //checks for win: matches in diags gameBoard ([0] and [4] and [8])  or ([2] and [4] and [6]) and does not contain strings
-                    //returns true
+const checkForWin = ()=>{
+    //checks for matches in rows 
+    if(Gameboard.boardState[0] === Gameboard.boardState[1] && Gameboard.boardState[0] === Gameboard.boardState[2] && Gameboard.boardState[0] !== "" ||
+       Gameboard.boardState[3] === Gameboard.boardState[4] && Gameboard.boardState[3] === Gameboard.boardState[5] && Gameboard.boardState[3] !== "" ||
+       Gameboard.boardState[6] === Gameboard.boardState[7] && Gameboard.boardState[6] === Gameboard.boardState[8] && Gameboard.boardState[6] !== "" )return true
+    //checks for  matches in cols
+    if(Gameboard.boardState[0] === Gameboard.boardState[3] && Gameboard.boardState[0] === Gameboard.boardState[6] && Gameboard.boardState[0] !== "" ||
+       Gameboard.boardState[1] === Gameboard.boardState[4] && Gameboard.boardState[1] === Gameboard.boardState[7] && Gameboard.boardState[1] !== "" ||
+       Gameboard.boardState[2] === Gameboard.boardState[5] && Gameboard.boardState[2] === Gameboard.boardState[8] && Gameboard.boardState[2] !== "" )return true
+            //checks for  matches in diags
+    if(Gameboard.boardState[0] === Gameboard.boardState[4] && Gameboard.boardState[0] === Gameboard.boardState[8] && Gameboard.boardState[0] !== "" ||
+        Gameboard.boardState[2] === Gameboard.boardState[4] && Gameboard.boardState[2] === Gameboard.boardState[6] && Gameboard.boardState[2] !== "" )return true
+    return false
+}
 
             //else it returns false
 
@@ -91,6 +97,15 @@ boardState: ["x","x","x","","o","o","x","x",""]
             //new game button on click startNewGame
             //gameboard divs on click makePlayerMove
 
+
+        return {
+            //functions to return
+            checkForWin,
+        };
+    })();
+
+//Game
+        
 
 
 
@@ -163,7 +178,7 @@ function test(){
 displayController.updateGameboardDisplay()
 
 
-
+console.log(Game.checkForWin())
 // dont know
     // when a user clicks a grid space, it should update the gameboard array with the player's icon , and update the div
         //stops a player from entering info if the grid/array relationship already contains a value 
