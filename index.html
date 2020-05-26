@@ -6,7 +6,31 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-
+    <h1>Tic Tac Toe</h1>
+    <div class="gameStatusDisplay">Player 1's turn!</div>
+    <div class="p1 playerContainer">
+        <div class="playerName" id="p1Name">Bob</div>
+        <div class="playerIcon" id="p1Icon">X</div>
+        <div class="playerScore" id="p1Score">0</div>
+    </div>
+    <div class="gameBoardContainer">
+        <div class="gameBoardGrid" data-index="0"></div>
+        <div class="gameBoardGrid" data-index="1"></div>
+        <div class="gameBoardGrid" data-index="2"></div>
+        <div class="gameBoardGrid" data-index="3"></div>
+        <div class="gameBoardGrid" data-index="4"></div>
+        <div class="gameBoardGrid" data-index="5"></div>
+        <div class="gameBoardGrid" data-index="6"></div>
+        <div class="gameBoardGrid" data-index="7"></div>
+        <div class="gameBoardGrid" data-index="8"></div>
+    </div>
+    <div class="p2 playerContainer">
+        <div class="playerName" id="p2Name">Joe</div>
+        <div class="playerIcon" id="p2Icon">O</div>
+        <div class="playerScore" id="p2Score">0</div>
+    </div>
+    <button class="newGameButton">New Game</button>
+    <button class="newRoundButton">New Round</button>
 <script src="tic-tac-toe.js"></script>
 </body>
 </html>
