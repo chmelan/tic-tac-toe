@@ -4,9 +4,6 @@ boardState:["", "", "", "", "", "", "", "", ""]
 }
 
 
-//creates player objects
-
-
 const displayController = (() => {
 
     //sets the text content of a target element
@@ -42,12 +39,46 @@ const displayController = (() => {
     //updates the gameboard display to show the current values in the gameBoard.boardState array
     const updateGameboardDisplay = ()=>{
         let grids = document.querySelectorAll(".gameBoardGrid")
-        console.log("updating gameboard display")
         grids.forEach(grid =>{
             grid.textContent = Gameboard.boardState[grid.dataset.index]
         })
     }
-  
+    const generateGameboard = ()=>{
+        let gameBoard = document.querySelector(".gameBoardContainer")
+        gameBoard.innerHTML =  `<div class="gameBoardGrid" data-index="0"></div>
+        <div class="gameBoardGrid" data-index="1"></div>
+        <div class="gameBoardGrid" data-index="2"></div>
+        <div class="gameBoardGrid" data-index="3"></div>
+        <div class="gameBoardGrid" data-index="4"></div>
+        <div class="gameBoardGrid" data-index="5"></div>
+        <div class="gameBoardGrid" data-index="6"></div>
+        <div class="gameBoardGrid" data-index="7"></div>
+        <div class="gameBoardGrid" data-index="8"></div>`
+    }
+    const generatePlayerForm = ()=>{
+        let gameBoard = document.querySelector(".gameBoardContainer")
+        gameBoard.innerHTML = `<div class="playerNameForm">
+        <label for ="player1Form">Player 1 Name:</label>
+        <input type="text" class="playerNameInput" id="player1Form" maxlength="4">
+        <label for ="player2Form">Player 2 Name:</label>
+        <input type="text" class="playerNameInput" id="player2Form" maxlength="4">
+        <button class="createPlayerButton">Create new Players</button>
+    </div>`
+    }
+    const generateNewGameAndRoundButtons = ()=>{
+        let gameBoard = document.querySelector(".gameBoardContainer")
+        gameBoard.innerHTML = `<div class="buttonContainer">
+        <button class="newGameButton">New Game</button>
+        <button class="newRoundButton">New Round</button>
+    </div>`
+        
+    }
+    const removeAllChildren = (parentNode)=>{
+        const adult = document.querySelector(parentNode)
+        while (adult.firstChild) {
+            adult.removeChild(adult.lastChild);
+        }
+    }
     return {
       setTextContent,
       addClass,
@@ -55,11 +86,17 @@ const displayController = (() => {
       addEventListenerToTarget,
       removeEventListenerFromTarget,
       updateGameboardDisplay,
+      generateGameboard,
+      removeAllChildren,
+      generatePlayerForm,
+      generateNewGameAndRoundButtons,
     };
   })();
 
-function test(){
-    console.log("this is a test")
+
+  const PlayerFactory = (name, icon, score) => {
+      console.log("creating new character")
+    return {name, icon, score}
 }
 
 const Game = (() => {
@@ -67,9 +104,7 @@ const Game = (() => {
     let player2 
     let currentPlayer 
 
-    const PlayerFactory = (name, icon, score) => {
-        return {name, icon, score}
-    }
+    
 
     const checkForWin = ()=>{
         //checks for matches in rows 
@@ -114,6 +149,10 @@ const Game = (() => {
         (currentPlayer === player1)?  displayController.setTextContent("#p1Score", currentPlayer.score) : displayController.setTextContent("#p2Score", currentPlayer.score)
         //removes the event listeners on the gameboard grids so that players cannot continue to input data
         displayController.removeEventListenerFromTarget(".gameBoardContainer", "click", makePlayerMove);
+        displayController.generateNewGameAndRoundButtons()
+        displayController.addEventListenerToTarget(".newRoundButton", "click", startNewRound)   
+        displayController.addEventListenerToTarget(".newGameButton", "click", startNewGame)
+
     }
             
     const playerTieGame = ()=>{
@@ -121,30 +160,40 @@ const Game = (() => {
         displayController.setTextContent(".gameStatusDisplay", `Tie!`)
         //removes the event listeners on the gameboard grids so that players cannot continue to input data
         displayController.removeEventListenerFromTarget(".gameBoardContainer", "click", makePlayerMove);
+        displayController.generateNewGameAndRoundButtons()
+        displayController.addEventListenerToTarget(".newRoundButton", "click", startNewRound)   
+        displayController.addEventListenerToTarget(".newGameButton", "click", startNewGame)
+
     }
 
     const startNewGame = ()=>{
-            resetGameBoard()
-            player1 = PlayerFactory(prompt("Player 1: Please enter your name")||"Player 1", "X", 0)
+            displayController.removeAllChildren(".gameBoardContainer")
+            //add in an input field to set player 1 and player 2
+            displayController.generatePlayerForm()
+            //add an event listener that will set the name values of player 1 and player 2 when the button is clicked and also runs the fuction StartNewRound
+            displayController.addEventListenerToTarget(".createPlayerButton", "click", createNewPlayer)
+           // startNewRound()
+    }
+    const createNewPlayer= ()=>{
+            let player1Name = document.querySelector("#player1Form").value
+            let player2Name = document.querySelector("#player2Form").value
+            if(player1Name === "" || player2Name ==="")return alert("Please add a name for both player 1 and player 2")
+            console.log(player1Name)
+            console.log(player2Name)
+            player1 = PlayerFactory(player1Name, "X", 0)
             displayController.setTextContent("#p1Name", player1.name)
             displayController.setTextContent("#p1Icon", player1.icon)
             displayController.setTextContent("#p1Score", player1.score)
-            player2 = PlayerFactory(prompt("Player 2: Please enter your name")||"Player 2", "O", 0)
+            player2 = PlayerFactory(player2Name, "O", 0)
             displayController.setTextContent("#p2Name", player2.name)
             displayController.setTextContent("#p2Icon", player2.icon)
             displayController.setTextContent("#p2Score", player2.score)
-                //removes active player class from player 1 and player 2 div
-            displayController.removeClass(".p1", "activePlayer")
-            displayController.removeClass(".p2", "activePlayer");    
-            currentPlayer = player1
-            displayController.setTextContent(".gameStatusDisplay", `${currentPlayer.name}'s Turn!`)
-            //adds active player class to player 1 div
-            displayController.addClass(".p1", "activePlayer")
-            //reinitializes the gameboard so that users can play the game
-            displayController.addEventListenerToTarget(".gameBoardContainer", "click", makePlayerMove)
+            startNewRound()
     }
-    
     const startNewRound = ()=>{
+            //generates the game board
+            displayController.generateGameboard()
+            //resets the game board
             resetGameBoard()
             displayController.removeClass(".p1", "activePlayer")
             displayController.removeClass(".p2", "activePlayer");    
@@ -158,6 +207,8 @@ const Game = (() => {
 
     const makePlayerMove = (e)=>{
         console.log("making player move")
+        //exits if the user doesnt click on a square
+        if(!e.target.classList.contains("gameBoardGrid"))return
         //if the clicked div is not empty
         if(e.target.textContent !== "")return alert("that is not a valid move!")
         console.log(e.target.dataset.index)
@@ -183,9 +234,7 @@ const Game = (() => {
             //new round button on click startNewRound
             //new game button on click startNewGame
             //gameboard divs on click makePlayerMove
-        displayController.addEventListenerToTarget(".newRoundButton", "click", startNewRound)   
         displayController.addEventListenerToTarget(".newGameButton", "click", startNewGame)
-        startNewGame()
         return {
             //functions to return
         };
