@@ -175,8 +175,8 @@ const Game = (() => {
            // startNewRound()
     }
     const createNewPlayer= ()=>{
-            let player1Name = document.querySelector("#player1Form").value
-            let player2Name = document.querySelector("#player2Form").value
+            let player1Name = document.querySelector("#player1Form").value.toUpperCase()
+            let player2Name = document.querySelector("#player2Form").value.toUpperCase()
             if(player1Name === "" || player2Name ==="")return alert("Please add a name for both player 1 and player 2")
             console.log(player1Name)
             console.log(player2Name)

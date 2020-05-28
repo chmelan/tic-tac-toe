@@ -4,9 +4,10 @@ body{
     
     grid-template-columns: 1fr 1fr 200px 200px 1fr 1fr;
     grid-template-rows: repeat(12, 1fr);
+    background-color: black;
+    color: greenyellow;
 }
 h1{
-    border: 1px solid red;
     grid-column: 1 / 7;
     grid-row: 1 / 2;
     text-align: center;
@@ -14,11 +15,10 @@ h1{
 }
 .gameStatusDisplay{
     display: flex;
-    border: 1px solid red;
     grid-column: 2 / 6;
     grid-row: 2 / 3;
     justify-content: center;
-    align-content: center;
+    align-items: center;
     font-size: 25px;
 }
 .p1{
@@ -32,13 +32,17 @@ h1{
 .playerContainer{
     display: flex;
     flex-direction: column;
-    border: 1px solid red;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid yellowgreen;
+    font-size: 25px;
 }
 .playerName{
     display: flex;
     flex: 2;
     justify-content: center;
-    font-size: 25px;
+    font-size: 50px;
+    align-items: center;
 }
 .playerIcon{
     display: flex;
@@ -56,48 +60,63 @@ h1{
     display: grid;
     grid-column: 3 / 5;
     grid-row: 3 / 11;
-    border: 2px solid black;
+    border: 1px solid yellowgreen;
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(3, 1fr);
+
 
 }
 .gameBoardGrid{
     display: flex;
-    justify-content: center;
-    align-content: center;
-    border: 1px solid black;
-    font-size: 50px;
+    justify-content: center; 
+    align-items: center;
+    font-size: 125px;
+    border: 1px solid yellowgreen
 }
 .buttonContainer{
     grid-column: 1 / 4;
     grid-row: 1 / 4;
     display: flex;
-    justify-content: center;
-    align-content: center;
+    justify-content: center; 
+    align-items: center;
+
 }
-.newGameButton{
-    border: 1px solid red;
-    grid-column:  3 / 4;
-    grid-row: 11 / 12;
+.newGameButton, .newRoundButton{
+    font-size: 25px;
+    border: 2px solid yellowgreen;
+    color: yellowgreen
 }
-.newRoundButton{
-    border: 1px solid red;
-    grid-column:  4 / 5;
-    grid-row: 11 / 12;
+.newGameButton:hover, .newRoundButton:hover{
+    background-color: yellowgreen;
+    color: black
 }
+
 .activePlayer{
-    border: 3px solid cyan;
+    background-color: yellowgreen;
+    color: black;
 }
 .playerNameInput{
-    border: 1px solid red;
+    border: 1px solid yellowgreen;
+    color: yellowgreen;
+    padding: 10px;
+    margin: 10px;
 }
 .playerNameForm{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     grid-column: 1 / 4;
     grid-row: 1 / 4;  
+    font-size: 25px;
 }
 .createPlayerButton{
-    border: 1px solid black;
+    background-color: yellowgreen;
+    color: black;
+    padding: 10px;
+    margin: 10px;
+}
+.createPlayerButton:hover{
+    background-color: black;
+    color: greenyellow
 }
